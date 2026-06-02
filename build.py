@@ -152,9 +152,17 @@ def build():
                 with open(source_file, 'r', encoding='utf-8') as f:
                     md_text = f.read()
                 
+                # <aside> 태그를 네이티브 마크다운 인용구(>)로 변환하여 파싱 오류 방지
+                def replace_aside(match):
+                    inner = match.group(1)
+                    return '\n'.join(f"> {line}" for line in inner.split('\n'))
+                
+                import re
+                md_text = re.sub(r'<aside>(.*?)</aside>', replace_aside, md_text, flags=re.DOTALL)
+                
                 html_snippet = markdown.markdown(
-                    md_text.replace('<aside>', '<aside markdown="1">'), 
-                    extensions=['tables', 'fenced_code', 'nl2br', 'md_in_html']
+                    md_text, 
+                    extensions=['tables', 'fenced_code', 'nl2br']
                 )
                 
                 plain_text = extract_text_for_search(html_snippet)
