@@ -2,7 +2,8 @@ venv/
 node_modules/
 web/
 web2/
-notion/
+notion/*
+!notion/.gitkeep
 __pycache__/
 .wrangler/
 *.pyc
