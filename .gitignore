@@ -1,0 +1,9 @@
+venv/
+node_modules/
+web/
+web2/
+notion/
+__pycache__/
+.wrangler/
+*.pyc
+.DS_Store
