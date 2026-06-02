@@ -486,6 +486,44 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 searchResults.classList.remove('active');
             }}
         }});
+        
+        // Restore folder open states from localStorage
+        const openFolders = JSON.parse(localStorage.getItem('flexg_open_folders') || '[]');
+        document.querySelectorAll('details[data-folder]').forEach(details => {{
+            const folderId = details.getAttribute('data-folder');
+            if (openFolders.includes(folderId)) {{
+                details.setAttribute('open', '');
+            }}
+            
+            // Listen for toggle to save state
+            details.addEventListener('toggle', (e) => {{
+                let currentOpen = JSON.parse(localStorage.getItem('flexg_open_folders') || '[]');
+                if (details.open) {{
+                    if (!currentOpen.includes(folderId)) currentOpen.push(folderId);
+                }} else {{
+                    currentOpen = currentOpen.filter(id => id !== folderId);
+                }}
+                localStorage.setItem('flexg_open_folders', JSON.stringify(currentOpen));
+            }});
+        }});
+
+        // Automatically open the folder containing the active page
+        document.querySelectorAll('.nav-links a.active').forEach(link => {{
+            let parent = link.parentElement;
+            while (parent && !parent.classList.contains('sidebar')) {{
+                if (parent.tagName === 'DETAILS') {{
+                    parent.setAttribute('open', '');
+                    // Also save to localStorage so it stays open
+                    const folderId = parent.getAttribute('data-folder');
+                    let currentOpen = JSON.parse(localStorage.getItem('flexg_open_folders') || '[]');
+                    if (folderId && !currentOpen.includes(folderId)) {{
+                        currentOpen.push(folderId);
+                        localStorage.setItem('flexg_open_folders', JSON.stringify(currentOpen));
+                    }}
+                }}
+                parent = parent.parentElement;
+            }}
+        }});
     </script>
 </body>
 </html>

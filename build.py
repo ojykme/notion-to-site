@@ -97,7 +97,7 @@ def build_toc_tree(md_files_info):
         current['files'].append(info)
     return tree
 
-def render_toc_tree(node, current_url_path=""):
+def render_toc_tree(node, current_url_path="", path_prefix=""):
     html = ""
     # Render files in current level
     # Sort files: index.html first, then alphabetically
@@ -110,12 +110,13 @@ def render_toc_tree(node, current_url_path=""):
     # Render children (folders)
     for folder_name in sorted(node['children'].keys()):
         child_node = node['children'][folder_name]
+        folder_id = f"{path_prefix}/{folder_name}" if path_prefix else folder_name
         
         html += f'<li>\n'
-        html += f'<details open>\n'
+        html += f'<details data-folder="{folder_id}">\n'
         html += f'<summary>{folder_name}</summary>\n'
         html += f'<ul class="nested-nav">\n'
-        html += render_toc_tree(child_node, current_url_path)
+        html += render_toc_tree(child_node, current_url_path, folder_id)
         html += f'</ul>\n'
         html += f'</details>\n'
         html += f'</li>\n'
