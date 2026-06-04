@@ -308,14 +308,14 @@ aside p {
     margin-bottom: 0;
 }
 
-blockquote {
+.callout {
     border-left: 4px solid var(--accent-color);
     margin: 2rem 0;
     padding: 1rem 1.5rem;
     background-color: rgba(0, 113, 227, 0.04);
     border-radius: 0 var(--radius-md) var(--radius-md) 0;
 }
-blockquote p {
+.callout p {
     margin: 0;
     color: #0056b3;
     font-weight: 500;

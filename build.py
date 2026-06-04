@@ -165,6 +165,9 @@ def build():
                     extensions=['tables', 'fenced_code', 'nl2br']
                 )
                 
+                # 인용구(blockquote)를 외부 수집기에서 이미지 파싱 오류가 없도록 일반 DIV로 변환
+                html_snippet = html_snippet.replace('<blockquote>', '<div class="callout">').replace('</blockquote>', '</div>')
+                
                 plain_text = extract_text_for_search(html_snippet)
                 title = cleaned_file_name[:-3]
                 
